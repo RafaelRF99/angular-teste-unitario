@@ -31,12 +31,12 @@ export class LivrosService {
   }
 
   putLivro(livro: ILivro): Observable<ILivro> {
-    const url = `${this.apiUrl}/editar`;
+    const url = `${this.apiUrl}/editar/${livro._id}`;
     return this.http.put<ILivro>(url, livro);
   }
 
   deletar(id: string): Observable<ILivro> {
-    const url = `${this.apiUrl}/id`;
+    const url = `${this.apiUrl}/${id}`;
     return this.http.delete<ILivro>(url);
   }
 }

@@ -68,6 +68,73 @@ describe('LivrosService', () => {
     expect(req.request.url).toBe(url); // Verifica se a url deu Match
   });
 
+  it('Deve realizar um POST', () => {
+    const resposta = {
+      titulo: 'NA',
+      autor: 'troca',
+      lancamento: '2024',
+      modelo: 'NA',
+      edicao: 'NA',
+    };
+
+    service.postLivro(resposta).subscribe((res) => {
+      expect(res).toBe(resposta);
+    });
+
+    const req = httpTestingController.expectOne(`${url}/lancamento`); // Simula requisição
+
+    expect(req.request.method).toBe('POST'); // Verifica metodo POST
+    expect(req.request.url).toBe(`${url}/lancamento`); // Verifica se a url deu Match
+
+    expect(req.flush(resposta)); // Simula uma resposta do servidor
+  });
+
+  it('Deve realizar um put', () => {
+    const resposta = {
+      _id: '5',
+      titulo: 'NA',
+      autor: 'troca',
+      lancamento: '2024',
+      modelo: 'NA',
+      edicao: 'NA',
+    };
+
+    service.putLivro(resposta).subscribe((res) => {
+      expect(res).toBe(resposta);
+    });
+
+    const req = httpTestingController.expectOne(
+      `${url}/editar/${resposta._id}`
+    ); // Simula requisição
+
+    expect(req.request.method).toBe('PUT'); // Verifica metodo PUT
+    expect(req.request.url).toBe(`${url}/editar/${resposta._id}`); // Verifica se a url deu Match
+
+    req.flush(resposta); // Simula uma resposta do servidor
+  });
+
+  it('Deve realizar um DELETE', () => {
+    const resposta = {
+      _id: '5',
+      titulo: 'NA',
+      autor: 'troca',
+      lancamento: '2024',
+      modelo: 'NA',
+      edicao: 'NA',
+    };
+
+    service.deletar(resposta._id).subscribe((res) => {
+      expect(res).toBe(resposta);
+    });
+
+    const request = httpTestingController.expectOne(`${url}/${resposta._id}`);
+
+    expect(request.request.method).toBe('DELETE');
+    expect(request.request.url).toBe(`${url}/${resposta._id}`);
+
+    request.flush(resposta);
+  });
+
   it('Deve dar erro na requisição', () => {
     service.getAll().subscribe({
       error: (error) => {
